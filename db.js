@@ -1,22 +1,24 @@
-import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 
 dotenv.config();
 
-const client = new MongoClient(process.env.DATABASE_URI);
-
-async function connect() {
-    try {
-        await client.connect();
-        const mgmtDB = client.db("mgmtDB");
-        mgmtDB.createCollection("users");
-        mgmtDB.createCollection("animals");
-        mgmtDB.createCollection("trainingLogs");
-    } catch (e) {
-       console.log(e);
+class Database {
+    constructor() {
+      this._connect();
     }
-}
-
-connect();
-
-export default client;
+  
+    _connect() {
+      mongoose
+        .connect(process.env.DATABASE_URI)
+        .then(() => {
+          console.log('Database connection successful');
+        })
+        .catch((err) => {
+          console.error('Database connection error');
+        });
+    }
+  }
+  
+const db = new Database();
+export default db;

@@ -9,6 +9,8 @@ dotenv.config();
 const app = express();
 const APP_PORT = 3000;
 app.use(cors({ origin: true }));
+app.use(express.json());
+
 app.get("/", (req, res) => {
   res.json({ Hello: "World", Version: 2 });
 });
