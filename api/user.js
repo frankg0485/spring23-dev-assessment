@@ -23,13 +23,16 @@ async function addUser(body) {
   });
 }
 
-async function getUsers() {
+async function getUsers(page) {
     return new Promise(async (resolve) => {
-        const users = await UserModel.find().lean();
+        const users = await UserModel.find().lean().skip((page - 1) * 10).limit(10);
         users.forEach(user => {
             delete user.password;
         });
-        resolve(users);
+        resolve({
+            users: users,
+            statusCode: 200
+        });
     });
 }
 

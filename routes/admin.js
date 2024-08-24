@@ -5,11 +5,16 @@ import { getTrainingLogs } from '../api/trainingLog.js';
 
 const adminRouter = express();
 
+adminRouter.all("*", (req, res, next) => {
+    if (req.query['page'] == undefined || req.query['page'] < 1) req.query['page'] = 1;
+    next();
+});
+
 adminRouter.get('/users', (req, res) => {
-    getUsers()
-    .then((users) => {
-        res.status(200);
-        res.json(users)
+    getUsers(req.query['page'])
+    .then((queryResults) => {
+        res.status(queryResults.statusCode);
+        res.json(queryResults.users)
     })
     .catch((e) => {
         console.log(e);
@@ -18,10 +23,10 @@ adminRouter.get('/users', (req, res) => {
 })
 
 adminRouter.get('/animals', (req, res) => {
-    getAnimals()
-    .then((animals) => {
-        res.status(200);
-        res.json(animals);
+    getAnimals(req.query['page'])
+    .then((queryResults) => {
+        res.status(queryResults.statusCode);
+        res.json(queryResults.animals);
     })
     .catch((e) => {
         console.log(e);
@@ -30,10 +35,10 @@ adminRouter.get('/animals', (req, res) => {
 })
 
 adminRouter.get('/training', (req, res) => {
-    getTrainingLogs()
-    .then((trainings) => {
-        res.status(200);
-        res.json(trainings);
+    getTrainingLogs(req.query['page'])
+    .then((queryResults) => {
+        res.status(queryResults.statusCode);
+        res.json(queryResults.trainings);
     })
     .catch((e) => {
         console.log(e);

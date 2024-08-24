@@ -23,9 +23,13 @@ async function addAnimal(body) {
   });
 }
 
-async function getAnimals() {
+async function getAnimals(page) {
     return new Promise(async (resolve) => {
-        resolve(await AnimalModel.find().lean());
+        const animals = await AnimalModel.find().lean().skip((page - 1) * 10).limit(10);
+        resolve({
+            animals: animals,
+            statusCode: 200,
+        });
     });
 }
 

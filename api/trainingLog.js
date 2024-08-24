@@ -31,9 +31,13 @@ async function addTrainingLog(body) {
   });
 }
 
-async function getTrainingLogs() {
+async function getTrainingLogs(page) {
     return new Promise(async (resolve) => {
-        resolve(await TrainingLogModel.find().lean());
+        const trainingLogs = await TrainingLogModel.find().lean().skip((page - 1) * 10).limit(10);
+        resolve({
+            trainingLogs: trainingLogs,
+            statusCode: 200,
+        });
     });
 }
 
