@@ -1,9 +1,12 @@
 import express from 'express';
+import adminRouter from './admin.js';
 import { addAnimal } from '../api/animal.js';
 import { addUser } from '../api/user.js';
 import { addTrainingLog } from '../api/trainingLog.js';
 
 const apiRouter = express();
+apiRouter.use('/admin', adminRouter);
+
 apiRouter.get('/health', (req, res) => {
     res.json({
         "healthy": true

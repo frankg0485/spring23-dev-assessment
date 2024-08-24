@@ -23,4 +23,14 @@ async function addUser(body) {
   });
 }
 
-export { addUser };
+async function getUsers() {
+    return new Promise(async (resolve) => {
+        const users = await UserModel.find().lean();
+        users.forEach(user => {
+            delete user.password;
+        });
+        resolve(users);
+    });
+}
+
+export { addUser, getUsers };

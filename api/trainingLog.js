@@ -30,4 +30,11 @@ async function addTrainingLog(body) {
       });
   });
 }
-export { addTrainingLog };
+
+async function getTrainingLogs() {
+    return new Promise(async (resolve) => {
+        resolve(await TrainingLogModel.find().lean());
+    });
+}
+
+export { addTrainingLog, getTrainingLogs };

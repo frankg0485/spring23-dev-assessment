@@ -23,4 +23,10 @@ async function addAnimal(body) {
   });
 }
 
-export { addAnimal };
+async function getAnimals() {
+    return new Promise(async (resolve) => {
+        resolve(await AnimalModel.find().lean());
+    });
+}
+
+export { addAnimal, getAnimals };
