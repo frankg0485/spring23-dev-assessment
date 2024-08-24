@@ -1,10 +1,16 @@
 import TrainingLogModel from "../models/trainingLog.js";
 
 async function addTrainingLog(body) {
-  let msg = new TrainingLogModel(body);
+  let trainingLog = new TrainingLogModel(body);
 
-  return new Promise((resolve) => {
-    msg
+  return new Promise(async (resolve) => {
+    try {
+      await trainingLog.validate();
+    } catch (e) {
+      resolve(400);
+    }
+
+    trainingLog
       .save()
       .then((doc) => {
         console.log(doc);
@@ -12,7 +18,7 @@ async function addTrainingLog(body) {
       })
       .catch((err) => {
         console.error(err);
-        resolve(400);
+        resolve(500);
       });
   });
 }

@@ -1,10 +1,16 @@
 import AnimalModel from "../models/animal.js";
 
 async function addAnimal(body) {
-  let msg = new AnimalModel(body);
+  let animal = new AnimalModel(body);
 
-  return new Promise((resolve) => {
-    msg
+  return new Promise(async (resolve) => {
+    try {
+      await animal.validate();
+    } catch (e) {
+      resolve(400);
+    }
+
+    animal
       .save()
       .then((doc) => {
         console.log(doc);
@@ -12,7 +18,7 @@ async function addAnimal(body) {
       })
       .catch((err) => {
         console.error(err);
-        resolve(400);
+        resolve(500);
       });
   });
 }

@@ -1,10 +1,16 @@
 import UserModel from "../models/user.js";
 
 async function addUser(body) {
-  let msg = new UserModel(body);
+  let user = new UserModel(body);
 
-  return new Promise((resolve) => {
-    msg
+  return new Promise(async (resolve) => {
+    try {
+      await user.validate();
+    } catch (e) {
+      resolve(400);
+    }
+
+    user
       .save()
       .then((doc) => {
         console.log(doc);
@@ -12,7 +18,7 @@ async function addUser(body) {
       })
       .catch((err) => {
         console.error(err);
-        resolve(400);
+        resolve(500);
       });
   });
 }
