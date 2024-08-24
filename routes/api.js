@@ -1,5 +1,7 @@
 import express from 'express';
 import { addAnimal } from '../api/animal.js';
+import { addUser } from '../api/user.js';
+import { addTrainingLog } from '../api/trainingLog.js';
 
 const apiRouter = express();
 apiRouter.get('/health', (req, res) => {
@@ -9,21 +11,23 @@ apiRouter.get('/health', (req, res) => {
 })
 
 apiRouter.post('/user', (req, res) => {
-    res.json({
-        "healthy": true
+    addUser(req.body)
+    .then((status) => {
+        res.sendStatus(status);
     })
 })
 
 apiRouter.post('/animal', (req, res) => {
-    addAnimal(req.body);
-    res.json({
-        "healthy": true
+    addAnimal(req.body)
+    .then((status) => {
+        res.sendStatus(status);
     })
 })
 
 apiRouter.post('/training', (req, res) => {
-    res.json({
-        "healthy": true
+    addTrainingLog(req.body)
+    .then((status) => {
+        res.sendStatus(status);
     })
 })
 

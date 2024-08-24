@@ -1,7 +1,7 @@
-import AnimalModel from "../models/animal.js";
+import UserModel from "../models/user.js";
 
-async function addAnimal(body) {
-  let msg = new AnimalModel(body);
+async function addUser(body) {
+  let msg = new UserModel(body);
 
   return new Promise((resolve) => {
     msg
@@ -17,4 +17,4 @@ async function addAnimal(body) {
   });
 }
 
-export { addAnimal };
+export { addUser };
