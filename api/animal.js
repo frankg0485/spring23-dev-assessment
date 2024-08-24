@@ -1,6 +1,7 @@
 import AnimalModel from "../models/animal.js";
 
-async function addAnimal(body) {
+async function addAnimal(user, body) {
+  body.owner = user._id;
   let animal = new AnimalModel(body);
 
   return new Promise(async (resolve) => {
@@ -24,13 +25,16 @@ async function addAnimal(body) {
 }
 
 async function getAnimals(page) {
-    return new Promise(async (resolve) => {
-        const animals = await AnimalModel.find().lean().skip((page - 1) * 10).limit(10);
-        resolve({
-            animals: animals,
-            statusCode: 200,
-        });
+  return new Promise(async (resolve) => {
+    const animals = await AnimalModel.find()
+      .lean()
+      .skip((page - 1) * 10)
+      .limit(10);
+    resolve({
+      animals: animals,
+      statusCode: 200,
     });
+  });
 }
 
 export { addAnimal, getAnimals };

@@ -1,7 +1,8 @@
 import TrainingLogModel from "../models/trainingLog.js";
 import AnimalModel from "../models/animal.js";
 
-async function addTrainingLog(body) {
+async function addTrainingLog(user, body) {
+  body.user = user._id;
   let trainingLog = new TrainingLogModel(body);
 
   return new Promise(async (resolve) => {
@@ -32,13 +33,16 @@ async function addTrainingLog(body) {
 }
 
 async function getTrainingLogs(page) {
-    return new Promise(async (resolve) => {
-        const trainingLogs = await TrainingLogModel.find().lean().skip((page - 1) * 10).limit(10);
-        resolve({
-            trainingLogs: trainingLogs,
-            statusCode: 200,
-        });
+  return new Promise(async (resolve) => {
+    const trainingLogs = await TrainingLogModel.find()
+      .lean()
+      .skip((page - 1) * 10)
+      .limit(10);
+    resolve({
+      trainingLogs: trainingLogs,
+      statusCode: 200,
     });
+  });
 }
 
 export { addTrainingLog, getTrainingLogs };

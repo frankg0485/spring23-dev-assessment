@@ -1,5 +1,8 @@
 import UserModel from "../models/user.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 async function addUser(body) {
   let user = new UserModel(body);
@@ -45,6 +48,17 @@ async function loginUser(body) {
     });
 }
 
+async function verifyUser(req, res) {
+    if ( (await loginUser(req.body)) != 200 ) {
+        res.sendStatus(403);
+    } else {
+        const user = await UserModel.findOne({ email: req.body.email }).lean();
+        delete user.password;
+        const token = jwt.sign(user, process.env.JWT_STRING, { expiresIn: '1h' });
+        res.json({ token });
+    }; 
+}
+
 async function getUsers(page) {
     return new Promise(async (resolve) => {
         const users = await UserModel.find().lean().skip((page - 1) * 10).limit(10);
@@ -58,4 +72,4 @@ async function getUsers(page) {
     });
 }
 
-export { addUser, getUsers, loginUser };
+export { addUser, getUsers, loginUser, verifyUser };
